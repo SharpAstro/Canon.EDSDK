@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>net10.0</TargetFramework>
+	<RootNamespace>Canon.EDSDK</RootNamespace>
+	<AssemblyName>Canon.EDSDK</AssemblyName>
+	<PackageLicenseFile>license.txt</PackageLicenseFile>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<DebugType>embedded</DebugType>
+	<PackageId>Canon.EDSDK</PackageId>
+	<PackageTags>Astronomy,Canon,EDSDK,DSLR</PackageTags>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<RepositoryUrl>https://github.com/SharpAstro/Canon.EDSDK</RepositoryUrl>
+	<PackageProjectUrl>https://github.com/SharpAstro/Canon.EDSDK</PackageProjectUrl>
+	<PublishRepositoryUrl>true</PublishRepositoryUrl>
+	<EmbedUntrackedSources>true</EmbedUntrackedSources>
+	<Description>Implements accessing Canon DSLR/mirrorless cameras via the Canon EDSDK using .NET</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	<CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	<CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<None Include="license.txt" PackagePath="" Pack="True" />
+	<None Include="lib/win-x86/EDSDK.dll" PackagePath="runtimes/win-x86/native" Pack="True" Condition="Exists('lib/win-x86/EDSDK.dll')" />
+	<None Include="lib/win-x64/EDSDK.dll" PackagePath="runtimes/win-x64/native" Pack="True" Condition="Exists('lib/win-x64/EDSDK.dll')" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.200" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>
