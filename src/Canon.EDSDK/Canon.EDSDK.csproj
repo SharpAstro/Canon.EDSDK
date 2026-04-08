@@ -27,8 +27,8 @@
 
   <ItemGroup>
 	<None Include="license.txt" PackagePath="" Pack="True" />
-	<None Include="lib/win-x86/EDSDK.dll" PackagePath="runtimes/win-x86/native" Pack="True" Condition="Exists('lib/win-x86/EDSDK.dll')" />
-	<None Include="lib/win-x64/EDSDK.dll" PackagePath="runtimes/win-x64/native" Pack="True" Condition="Exists('lib/win-x64/EDSDK.dll')" />
+	<None Include="../../lib/win-x86/EDSDK.dll" PackagePath="runtimes/win-x86/native" Pack="True" Condition="Exists('../../lib/win-x86/EDSDK.dll')" />
+	<None Include="../../lib/win-x64/EDSDK.dll" PackagePath="runtimes/win-x64/native" Pack="True" Condition="Exists('../../lib/win-x64/EDSDK.dll')" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Canon.EDSDK\Canon.EDSDK.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="Exists('..\..\lib\win-x64\EDSDK.dll')">
+    <None Include="..\..\lib\win-x64\EDSDK.dll" CopyToOutputDirectory="PreserveNewest" Link="EDSDK.dll" />
+  </ItemGroup>
+
+</Project>

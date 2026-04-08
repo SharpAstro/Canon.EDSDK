@@ -1,3 +1,4 @@
 <Solution>
-  <Project Path="Canon.EDSDK.csproj" />
+  <Project Path="src/Canon.EDSDK/Canon.EDSDK.csproj" />
+  <Project Path="src/Canon.EDSDK.Sample/Canon.EDSDK.Sample.csproj" />
 </Solution>
