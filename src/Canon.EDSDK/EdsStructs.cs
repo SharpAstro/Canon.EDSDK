@@ -1,7 +1,21 @@
+using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Canon.EDSDK;
+
+[InlineArray(256)]
+public struct InlineBytes256 { private byte _element; }
+
+[InlineArray(32)]
+public struct InlineBytes32 { private byte _element; }
+
+[InlineArray(128)]
+public struct InlineInt128 { private int _element; }
+
+[InlineArray(1053)]
+public struct InlineFocusPoints1053 { private EdsFocusPoint _element; }
 
 [StructLayout(LayoutKind.Sequential)]
 public readonly struct EdsPoint
@@ -46,50 +60,46 @@ public readonly struct EdsTime
 }
 
 [StructLayout(LayoutKind.Sequential)]
-public readonly struct EdsDeviceInfo
+public struct EdsDeviceInfo
 {
-    [MarshalAs(UnmanagedType.ByValArray, ArraySubType = UnmanagedType.U1, SizeConst = 256)]
-    private readonly byte[] _portName;
+    private InlineBytes256 _portName;
+    private InlineBytes256 _deviceDescription;
+    public uint DeviceSubType;
+    private uint _reserved;
 
-    [MarshalAs(UnmanagedType.ByValArray, ArraySubType = UnmanagedType.U1, SizeConst = 256)]
-    private readonly byte[] _deviceDescription;
+    public readonly string PortName => ReadInlineString(_portName);
+    public readonly string DeviceDescription => ReadInlineString(_deviceDescription);
 
-    public readonly uint DeviceSubType;
-    private readonly uint _reserved;
-
-    public string PortName => Encoding.ASCII.GetString(_portName).TrimEnd((char)0);
-    public string DeviceDescription => Encoding.ASCII.GetString(_deviceDescription).TrimEnd((char)0);
+    private static string ReadInlineString(InlineBytes256 bytes) =>
+        Encoding.ASCII.GetString(((ReadOnlySpan<byte>)bytes).TrimEnd((byte)0));
 }
 
 [StructLayout(LayoutKind.Sequential)]
-public readonly struct EdsVolumeInfo
+public struct EdsVolumeInfo
 {
-    public readonly EdsStorageType StorageType;
-    public readonly EdsAccess Access;
-    public readonly ulong MaxCapacity;
-    public readonly ulong FreeSpaceInBytes;
+    public EdsStorageType StorageType;
+    public EdsAccess Access;
+    public ulong MaxCapacity;
+    public ulong FreeSpaceInBytes;
+    private InlineBytes256 _volumeLabel;
 
-    [MarshalAs(UnmanagedType.ByValArray, ArraySubType = UnmanagedType.U1, SizeConst = 256)]
-    private readonly byte[] _volumeLabel;
-
-    public string VolumeLabel => Encoding.ASCII.GetString(_volumeLabel).TrimEnd((char)0);
+    public readonly string VolumeLabel =>
+        Encoding.ASCII.GetString(((ReadOnlySpan<byte>)_volumeLabel).TrimEnd((byte)0));
 }
 
 [StructLayout(LayoutKind.Sequential)]
-public readonly struct EdsDirectoryItemInfo
+public struct EdsDirectoryItemInfo
 {
-    public readonly ulong Size;
-    public readonly int IsFolder;
-    public readonly uint GroupID;
-    public readonly uint Option;
+    public ulong Size;
+    public int IsFolder;
+    public uint GroupID;
+    public uint Option;
+    private InlineBytes256 _fileName;
+    public uint Format;
+    public uint DateTime;
 
-    [MarshalAs(UnmanagedType.ByValArray, ArraySubType = UnmanagedType.U1, SizeConst = 256)]
-    private readonly byte[] _fileName;
-
-    public readonly uint Format;
-    public readonly uint DateTime;
-
-    public string FileName => Encoding.ASCII.GetString(_fileName).TrimEnd((char)0);
+    public readonly string FileName =>
+        Encoding.ASCII.GetString(((ReadOnlySpan<byte>)_fileName).TrimEnd((byte)0));
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -113,14 +123,12 @@ public readonly struct EdsSaveImageSetting
 }
 
 [StructLayout(LayoutKind.Sequential)]
-public readonly struct EdsPropertyDesc
+public struct EdsPropertyDesc
 {
-    public readonly int Form;
-    public readonly uint Access;
-    public readonly int NumElements;
-
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
-    public readonly int[] PropDesc;
+    public int Form;
+    public uint Access;
+    public int NumElements;
+    public InlineInt128 PropDesc;
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -147,15 +155,12 @@ public readonly struct EdsFocusPoint
 }
 
 [StructLayout(LayoutKind.Sequential)]
-public readonly struct EdsFocusInfo
+public struct EdsFocusInfo
 {
-    public readonly EdsRect ImageRect;
-    public readonly uint PointNumber;
-
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1053)]
-    public readonly EdsFocusPoint[] FocusPoints;
-
-    public readonly uint ExecuteMode;
+    public EdsRect ImageRect;
+    public uint PointNumber;
+    public InlineFocusPoints1053 FocusPoints;
+    public uint ExecuteMode;
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 2)]
@@ -197,12 +202,9 @@ public struct EdsManualWBData
 {
     public uint Valid;
     public uint DataSize;
+    private InlineBytes32 _caption;
+    public byte Data; // variable-length; read via pointer offset
 
-    [MarshalAs(UnmanagedType.ByValArray, ArraySubType = UnmanagedType.U1, SizeConst = 32)]
-    private readonly byte[] _caption;
-
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-    public byte[] Data;
-
-    public string Caption => Encoding.ASCII.GetString(_caption).TrimEnd((char)0);
+    public readonly string Caption =>
+        Encoding.ASCII.GetString(((ReadOnlySpan<byte>)_caption).TrimEnd((byte)0));
 }

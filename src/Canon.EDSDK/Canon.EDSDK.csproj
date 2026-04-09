@@ -10,10 +10,12 @@
 	<PackageId>Canon.EDSDK</PackageId>
 	<PackageTags>Astronomy,Canon,EDSDK,DSLR</PackageTags>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<IsAotCompatible>true</IsAotCompatible>
 	<RepositoryUrl>https://github.com/SharpAstro/Canon.EDSDK</RepositoryUrl>
 	<PackageProjectUrl>https://github.com/SharpAstro/Canon.EDSDK</PackageProjectUrl>
 	<PublishRepositoryUrl>true</PublishRepositoryUrl>
 	<EmbedUntrackedSources>true</EmbedUntrackedSources>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<Description>Implements accessing Canon DSLR/mirrorless cameras via the Canon EDSDK using .NET</Description>
   </PropertyGroup>
 
@@ -27,6 +29,7 @@
 
   <ItemGroup>
 	<None Include="license.txt" PackagePath="" Pack="True" />
+	<None Include="../../README.md" PackagePath="" Pack="True" />
 	<None Include="../../lib/win-x86/EDSDK.dll" PackagePath="runtimes/win-x86/native" Pack="True" Condition="Exists('../../lib/win-x86/EDSDK.dll')" />
 	<None Include="../../lib/win-x64/EDSDK.dll" PackagePath="runtimes/win-x64/native" Pack="True" Condition="Exists('../../lib/win-x64/EDSDK.dll')" />
   </ItemGroup>

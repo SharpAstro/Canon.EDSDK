@@ -64,9 +64,9 @@ public static partial class EDSDK
     public static partial EdsError EdsSetPropertyData(nint inRef, EdsPropertyId inPropertyID, int inParam,
         int inPropertySize, nint inPropertyData);
 
-    // Functions with non-blittable struct parameters use DllImport
-    [DllImport(EDSDKLib, EntryPoint = "EdsGetPropertyDesc", CallingConvention = CallingConvention.StdCall)]
-    public static extern EdsError EdsGetPropertyDesc(nint inRef, EdsPropertyId inPropertyID,
+    [LibraryImport(EDSDKLib, EntryPoint = "EdsGetPropertyDesc")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
+    public static partial EdsError EdsGetPropertyDesc(nint inRef, EdsPropertyId inPropertyID,
         out EdsPropertyDesc outPropertyDesc);
 
     #endregion
@@ -231,9 +231,9 @@ public static partial class EDSDK
     [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
     public static partial EdsError EdsGetCameraList(out nint outCameraListRef);
 
-    // Non-blittable: EdsDeviceInfo has MarshalAs byte[] fields
-    [DllImport(EDSDKLib, EntryPoint = "EdsGetDeviceInfo", CallingConvention = CallingConvention.StdCall)]
-    public static extern EdsError EdsGetDeviceInfo(nint inCameraRef, out EdsDeviceInfo outDeviceInfo);
+    [LibraryImport(EDSDKLib, EntryPoint = "EdsGetDeviceInfo")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
+    public static partial EdsError EdsGetDeviceInfo(nint inCameraRef, out EdsDeviceInfo outDeviceInfo);
 
     #endregion
 
@@ -259,17 +259,17 @@ public static partial class EDSDK
     [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
     public static partial EdsError EdsSendStatusCommand(nint inCameraRef, EdsStateCommand inCameraState, int inParam);
 
-    // Non-blittable: EdsCapacity has Pack=2
-    [DllImport(EDSDKLib, EntryPoint = "EdsSetCapacity", CallingConvention = CallingConvention.StdCall)]
-    public static extern EdsError EdsSetCapacity(nint inCameraRef, EdsCapacity inCapacity);
+    [LibraryImport(EDSDKLib, EntryPoint = "EdsSetCapacity")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
+    public static partial EdsError EdsSetCapacity(nint inCameraRef, EdsCapacity inCapacity);
 
     #endregion
 
     #region Volume
 
-    // Non-blittable: EdsVolumeInfo has MarshalAs byte[] fields
-    [DllImport(EDSDKLib, EntryPoint = "EdsGetVolumeInfo", CallingConvention = CallingConvention.StdCall)]
-    public static extern EdsError EdsGetVolumeInfo(nint inVolumeRef, out EdsVolumeInfo outVolumeInfo);
+    [LibraryImport(EDSDKLib, EntryPoint = "EdsGetVolumeInfo")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
+    public static partial EdsError EdsGetVolumeInfo(nint inVolumeRef, out EdsVolumeInfo outVolumeInfo);
 
     [LibraryImport(EDSDKLib, EntryPoint = "EdsFormatVolume")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
@@ -279,9 +279,9 @@ public static partial class EDSDK
 
     #region Directory items
 
-    // Non-blittable: EdsDirectoryItemInfo has MarshalAs byte[] fields
-    [DllImport(EDSDKLib, EntryPoint = "EdsGetDirectoryItemInfo", CallingConvention = CallingConvention.StdCall)]
-    public static extern EdsError EdsGetDirectoryItemInfo(nint inDirItemRef, out EdsDirectoryItemInfo outDirItemInfo);
+    [LibraryImport(EDSDKLib, EntryPoint = "EdsGetDirectoryItemInfo")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
+    public static partial EdsError EdsGetDirectoryItemInfo(nint inDirItemRef, out EdsDirectoryItemInfo outDirItemInfo);
 
     [LibraryImport(EDSDKLib, EntryPoint = "EdsDeleteDirectoryItem")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
@@ -315,10 +315,10 @@ public static partial class EDSDK
 
     #region Streams
 
-    // Non-blittable: string parameter
-    [DllImport(EDSDKLib, EntryPoint = "EdsCreateFileStream", CallingConvention = CallingConvention.StdCall)]
-    public static extern EdsError EdsCreateFileStream(
-        [MarshalAs(UnmanagedType.LPStr)] string inFileName,
+    [LibraryImport(EDSDKLib, EntryPoint = "EdsCreateFileStream", StringMarshalling = StringMarshalling.Utf8)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
+    public static partial EdsError EdsCreateFileStream(
+        string inFileName,
         EdsFileCreateDisposition inCreateDisposition,
         EdsAccess inDesiredAccess,
         out nint outStream);
@@ -327,9 +327,9 @@ public static partial class EDSDK
     [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
     public static partial EdsError EdsCreateMemoryStream(ulong inBufferSize, out nint outStream);
 
-    // Non-blittable: string parameter
-    [DllImport(EDSDKLib, EntryPoint = "EdsCreateStreamEx", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
-    public static extern EdsError EdsCreateStreamEx(
+    [LibraryImport(EDSDKLib, EntryPoint = "EdsCreateStreamEx", StringMarshalling = StringMarshalling.Utf16)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
+    public static partial EdsError EdsCreateStreamEx(
         string inFileName,
         EdsFileCreateDisposition inCreateDisposition,
         EdsAccess inDesiredAccess,
@@ -367,9 +367,9 @@ public static partial class EDSDK
     [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
     public static partial EdsError EdsCopyData(nint inStreamRef, ulong inWriteSize, nint outStreamRef);
 
-    // Non-blittable: delegate parameter
-    [DllImport(EDSDKLib, EntryPoint = "EdsSetProgressCallback", CallingConvention = CallingConvention.StdCall)]
-    public static extern EdsError EdsSetProgressCallback(nint inRef, EdsProgressCallback inProgressFunc,
+    [LibraryImport(EDSDKLib, EntryPoint = "EdsSetProgressCallback")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
+    public static partial EdsError EdsSetProgressCallback(nint inRef, EdsProgressCallback inProgressFunc,
         EdsProgressOption inProgressOption, nint inContext);
 
     #endregion
@@ -380,9 +380,9 @@ public static partial class EDSDK
     [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
     public static partial EdsError EdsCreateImageRef(nint inStreamRef, out nint outImageRef);
 
-    // Non-blittable: EdsImageInfo has nested struct
-    [DllImport(EDSDKLib, EntryPoint = "EdsGetImageInfo", CallingConvention = CallingConvention.StdCall)]
-    public static extern EdsError EdsGetImageInfo(nint inImageRef, EdsImageSource inImageSource, out EdsImageInfo outImageInfo);
+    [LibraryImport(EDSDKLib, EntryPoint = "EdsGetImageInfo")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
+    public static partial EdsError EdsGetImageInfo(nint inImageRef, EdsImageSource inImageSource, out EdsImageInfo outImageInfo);
 
     [LibraryImport(EDSDKLib, EntryPoint = "EdsGetImage")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
@@ -393,20 +393,23 @@ public static partial class EDSDK
 
     #region Event handlers
 
-    // Non-blittable: delegate parameters
-    [DllImport(EDSDKLib, EntryPoint = "EdsSetCameraAddedHandler", CallingConvention = CallingConvention.StdCall)]
-    public static extern EdsError EdsSetCameraAddedHandler(EdsCameraAddedHandler inCameraAddedHandler, nint inContext);
+    [LibraryImport(EDSDKLib, EntryPoint = "EdsSetCameraAddedHandler")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
+    public static partial EdsError EdsSetCameraAddedHandler(EdsCameraAddedHandler inCameraAddedHandler, nint inContext);
 
-    [DllImport(EDSDKLib, EntryPoint = "EdsSetPropertyEventHandler", CallingConvention = CallingConvention.StdCall)]
-    public static extern EdsError EdsSetPropertyEventHandler(nint inCameraRef, EdsPropertyEvent inEvent,
+    [LibraryImport(EDSDKLib, EntryPoint = "EdsSetPropertyEventHandler")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
+    public static partial EdsError EdsSetPropertyEventHandler(nint inCameraRef, EdsPropertyEvent inEvent,
         EdsPropertyEventHandler inPropertyEventHandler, nint inContext);
 
-    [DllImport(EDSDKLib, EntryPoint = "EdsSetObjectEventHandler", CallingConvention = CallingConvention.StdCall)]
-    public static extern EdsError EdsSetObjectEventHandler(nint inCameraRef, EdsObjectEvent inEvent,
+    [LibraryImport(EDSDKLib, EntryPoint = "EdsSetObjectEventHandler")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
+    public static partial EdsError EdsSetObjectEventHandler(nint inCameraRef, EdsObjectEvent inEvent,
         EdsObjectEventHandler inObjectEventHandler, nint inContext);
 
-    [DllImport(EDSDKLib, EntryPoint = "EdsSetCameraStateEventHandler", CallingConvention = CallingConvention.StdCall)]
-    public static extern EdsError EdsSetCameraStateEventHandler(nint inCameraRef, EdsStateEvent inEvent,
+    [LibraryImport(EDSDKLib, EntryPoint = "EdsSetCameraStateEventHandler")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
+    public static partial EdsError EdsSetCameraStateEventHandler(nint inCameraRef, EdsStateEvent inEvent,
         EdsStateEventHandler inStateEventHandler, nint inContext);
 
     #endregion

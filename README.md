@@ -4,11 +4,11 @@ Modern .NET 10 P/Invoke bindings for Canon's EDSDK (13.14.40).
 
 ## Features
 
-- **LibraryImport** for blittable methods (source-generated, zero-alloc), **DllImport** for non-blittable
+- **LibraryImport** throughout — all methods source-generated, NativeAOT compatible
 - `nint` handles throughout (not `IntPtr`)
 - `EdsError` return type on all methods instead of raw `uint`
 - Typed enum params — `EdsPropertyId`, `EdsCameraCommand`, `EdsObjectEvent` etc.
-- `readonly struct` with private fields and lazy string decode
+- `readonly struct` with `InlineArray` fields (no `MarshalAs` byte arrays) and lazy string decode
 - Typed `EdsGetPropertyData` / `EdsSetPropertyData` overloads using `unsafe` stackalloc
 - `[Flags]` on `EdsFileAttribute`, `EdsEvfOutputDevice`, `EdsBracket`
 
