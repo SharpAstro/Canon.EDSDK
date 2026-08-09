@@ -3,3 +3,11 @@ obj/
 *.user
 *.suo
 .vs/
+
+# Canon's EDSDK redistributable, which is NOT ours to commit or redistribute.
+# Canon.EDSDK.csproj packs lib/win-x86|win-x64/EDSDK.dll into runtimes/<rid>/native, so an
+# accidental `git add -A` would ship a proprietary Canon binary inside a public NuGet package.
+# It has never been tracked; this only makes that permanent. Obtain it from Canon's Developer
+# Community and drop it in lib/win-x64/ (see README) - the Exists() conditions pack it when
+# present and skip it when not, so nothing here is required to compile.
+lib/**/EDSDK.dll
